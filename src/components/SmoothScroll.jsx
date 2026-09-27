@@ -24,6 +24,8 @@ export default function SmoothScroll() {
       infinite: false,
     });
 
+    window.__lenis = lenis;
+
     lenis.on('scroll', ScrollTrigger.update);
 
     const updateTicker = (time) => {
@@ -34,6 +36,7 @@ export default function SmoothScroll() {
     gsap.ticker.lagSmoothing(0);
 
     return () => {
+      window.__lenis = null;
       lenis.destroy();
       gsap.ticker.remove(updateTicker);
     };

@@ -1,54 +1,133 @@
 import { motion } from 'framer-motion';
-import { Shield, Award, Terminal, Cpu, Radio, Network, Zap } from 'lucide-react';
-
-const SPONSORS = [
-  { name: 'NEXUS CLOUD', tier: 'Title Partner', icon: Cpu, desc: 'Decentralized High-Performance GPU Compute' },
-  { name: 'CYBERDYNE LABS', tier: 'Robotics Partner', icon: Terminal, desc: 'Autonomous Robotics & Hardware' },
-  { name: 'QUANTUM VECTOR', tier: 'Hackathon Partner', icon: Network, desc: 'Quantum Computing Infrastructure' },
-  { name: 'HYPERION AUDIO', tier: 'Entertainment Partner', icon: Radio, desc: 'Concert Grade Acoustic Production' },
-  { name: 'AERO DYNAMICS', tier: 'Drone Arena Partner', icon: Zap, desc: 'Autonomous UAV Systems' },
-  { name: 'TITAN DEFENSE', tier: 'Cybersecurity Partner', icon: Shield, desc: 'Next-Gen Threat Intelligence' },
-];
+import { Award, ExternalLink, Building2 } from 'lucide-react';
+import { useSiteContent } from '../../context/SiteContentContext';
+import { useTheme } from '../../context/ThemeContext';
 
 export default function SponsorsSection() {
+  const { sponsors } = useSiteContent();
+  const { isLight } = useTheme();
+
+  const sponsorsList = sponsors && sponsors.length > 0 ? sponsors : [];
+
   return (
-    <section className="relative py-20 bg-black border-t border-slate-900 overflow-hidden">
+    <section id="sponsors" className={`relative py-24 sm:py-32 border-t overflow-hidden select-none transition-colors ${
+      isLight ? 'bg-white border-neutral-200' : 'bg-black border-neutral-900'
+    }`}>
+      {/* Volumetric Background Glows */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-red-600/[0.06] rounded-full blur-[160px] pointer-events-none" />
+      <div className="absolute bottom-0 right-10 w-64 h-64 bg-red-700/[0.05] rounded-full blur-[130px] pointer-events-none" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full cyber-glass border border-red-500/30 text-xs font-mono text-red-400 uppercase tracking-widest mb-3">
-            <Award className="w-3.5 h-3.5 text-red-400" />
-            Ecosystem Partners
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full cyber-glass border border-red-500/30 text-xs font-mono text-red-500 uppercase tracking-widest mb-3 shadow-[0_0_12px_rgba(239,68,68,0.2)]">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_#ef4444]" />
+            <Award className="w-3.5 h-3.5 text-red-500" />
+            <span>Ecosystem Partners</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-black font-heading text-white tracking-tight">
-            POWERED BY <span className="text-red-500 text-glow-red">INDUSTRY LEADERS</span>
+
+          <h2 className={`text-3xl sm:text-5xl font-black font-heading tracking-tight uppercase leading-tight ${
+            isLight ? 'text-slate-900' : 'text-white'
+          }`}>
+            POWERED BY <span className="text-red-600 dark:text-red-500 text-glow-red">INDUSTRY LEADERS</span>
           </h2>
-          <p className="mt-2 text-xs sm:text-sm text-slate-400 font-cyber">
-            Collaborating with world-leading deep-tech pioneers, research institutions, and media syndicates.
+
+          <p className={`mt-3 text-xs sm:text-sm md:text-base font-cyber max-w-xl mx-auto leading-relaxed ${
+            isLight ? 'text-neutral-600' : 'text-neutral-400'
+          }`}>
+            Collaborating with world-leading deep-tech pioneers, research institutions, and industry champions shaping SAMYAK 2026.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {SPONSORS.map((s, idx) => {
-            const Icon = s.icon;
+        {/* Circular Sponsors Grid — Modeled with Samyak Aesthetics */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-8 sm:gap-10 justify-items-center">
+          {sponsorsList.map((sponsor, idx) => {
+            const hasLink = Boolean(sponsor.websiteUrl && sponsor.websiteUrl.trim() !== '');
+            const rawLogo = sponsor.logoUrl;
+            const logoSrc = isLight && (!rawLogo || rawLogo === '/samyak-emblem.png' || rawLogo.includes('samyak-emblem.png'))
+              ? '/samyak-emblem-black.png'
+              : rawLogo;
+
             return (
               <motion.div
-                key={s.name}
-                initial={{ opacity: 0, y: 15 }}
+                key={sponsor.id || sponsor.name || idx}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.08 }}
-                className="p-5 rounded-xl cyber-card border border-neutral-800/80 hover:border-red-500/50 flex flex-col items-center text-center justify-center group transition-all duration-300 hover:scale-105"
+                transition={{ duration: 0.5, delay: idx * 0.08 }}
+                className="w-full max-w-[200px] flex flex-col items-start group cursor-pointer mx-auto"
+                onClick={() => {
+                  if (hasLink) {
+                    window.open(sponsor.websiteUrl, '_blank', 'noopener,noreferrer');
+                  }
+                }}
               >
-                <div className="p-3 rounded-lg bg-neutral-900 text-red-400 group-hover:text-red-300 transition-colors mb-3">
-                  <Icon className="w-6 h-6" />
+                {/* ── ROUND THING: Circular Logo Showcase ── */}
+                <div className={`relative w-36 h-36 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full border-2 p-2 flex items-center justify-center transition-all duration-300 group-hover:scale-105 ${
+                  isLight
+                    ? 'border-neutral-300 bg-white shadow-lg group-hover:border-red-600 group-hover:shadow-[0_10px_30px_rgba(139,21,27,0.18)]'
+                    : 'border-neutral-700/80 bg-neutral-950 shadow-[0_10px_30px_rgba(0,0,0,0.85)] group-hover:border-red-500 group-hover:shadow-[0_0_28px_rgba(239,68,68,0.45)]'
+                }`}>
+                  
+                  {/* Subtle red ring on hover */}
+                  <div className="absolute inset-0 rounded-full border border-red-500/30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+
+                  {/* Logo or Emblem Display */}
+                  <div className={`w-full h-full rounded-full border overflow-hidden flex items-center justify-center p-3 relative ${
+                    isLight ? 'bg-neutral-50 border-neutral-200' : 'bg-neutral-900/90 border-neutral-800/80'
+                  }`}>
+                    {logoSrc ? (
+                      <img
+                        src={logoSrc}
+                        alt={sponsor.name}
+                        className="w-full h-full object-contain filter contrast-105 group-hover:scale-105 transition-all duration-300"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                        }}
+                      />
+                    ) : null}
+
+                    {/* Fallback Icon when no image */}
+                    <div 
+                      className={`w-full h-full items-center justify-center text-red-500 ${logoSrc ? 'hidden' : 'flex'}`}
+                    >
+                      <Building2 className={`w-10 h-10 transition-colors ${isLight ? 'text-neutral-400 group-hover:text-red-600' : 'text-neutral-600 group-hover:text-red-400'}`} />
+                    </div>
+                  </div>
+
+                  {/* External Link Pin on Hover */}
+                  {hasLink && (
+                    <div className="absolute bottom-1 right-1 w-7 h-7 rounded-full bg-red-600 border border-white/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-[0_0_12px_rgba(239,68,68,0.8)] scale-90 group-hover:scale-100">
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </div>
+                  )}
                 </div>
-                <h4 className="font-heading font-bold text-xs sm:text-sm text-white tracking-wider">
-                  {s.name}
-                </h4>
-                <span className="text-[10px] font-mono text-red-400/80 uppercase mt-1">
-                  {s.tier}
-                </span>
+
+                {/* ── LOWER TEXT BLOCK: Red Left Line + Name + Business Subtitle ── */}
+                <div className="w-full mt-4 sm:mt-5 pl-3 border-l-2 border-red-500 text-left transition-colors duration-300 group-hover:border-red-600">
+                  {sponsor.tier && (
+                    <span className={`text-[10px] font-mono uppercase tracking-widest block mb-0.5 font-bold ${
+                      isLight ? 'text-red-700' : 'text-red-400/90'
+                    }`}>
+                      {sponsor.tier}
+                    </span>
+                  )}
+
+                  <h3 className={`font-heading font-black text-sm sm:text-base md:text-lg uppercase tracking-wider transition-colors line-clamp-1 leading-tight ${
+                    isLight ? 'text-slate-900 group-hover:text-red-700' : 'text-white group-hover:text-red-400'
+                  }`}>
+                    {sponsor.name}
+                  </h3>
+
+                  <p className={`text-xs sm:text-[13px] font-cyber leading-snug mt-1 line-clamp-2 transition-colors ${
+                    isLight ? 'text-neutral-600 group-hover:text-neutral-800' : 'text-neutral-400 group-hover:text-neutral-300'
+                  }`}>
+                    {sponsor.subtitle || 'Official Festival Partner'}
+                  </p>
+                </div>
+
               </motion.div>
             );
           })}

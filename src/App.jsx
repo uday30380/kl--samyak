@@ -7,7 +7,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 // Global Components
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
-import GlobalAudioPlayer from './components/Audio/GlobalAudioPlayer';
 import CustomCursor from './components/Cursor/CustomCursor';
 import ScrollProgress from './components/ScrollProgress/ScrollProgress';
 import ParticleBackground from './components/ParticleBackground/ParticleBackground';
@@ -236,9 +235,6 @@ export default function App() {
           </div>
         </footer>
       )}
-
-      {/* Global Background Audio Player */}
-      {!isDedicatedAppRoute && <GlobalAudioPlayer />}
     </div>
   );
 }

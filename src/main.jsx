@@ -5,6 +5,7 @@ import { UserProvider } from './data/userContext';
 import { AdminAuthProvider } from './context/AdminAuthContext';
 import { SiteContentProvider } from './context/SiteContentContext';
 import './index.css';
+import { ThemeProvider } from './context/ThemeContext';
 import App from './App.jsx';
 
 // Developer & Architecture Attribution & Emergency Contact
@@ -41,13 +42,15 @@ try {
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <AdminAuthProvider>
-        <SiteContentProvider>
-          <UserProvider>
-            <App />
-          </UserProvider>
-        </SiteContentProvider>
-      </AdminAuthProvider>
+      <ThemeProvider>
+        <AdminAuthProvider>
+          <SiteContentProvider>
+            <UserProvider>
+              <App />
+            </UserProvider>
+          </SiteContentProvider>
+        </AdminAuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   </StrictMode>
 );

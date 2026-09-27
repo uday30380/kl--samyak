@@ -1,12 +1,20 @@
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { pageVariants } from '../animations/pageAnimations';
 import AboutSection from '../components/About/AboutSection';
 import SponsorsSection from '../components/Sponsors/SponsorsSection';
-import { Sparkles, Building, CheckCircle2, Code2, ExternalLink, Server, Layers, Globe } from 'lucide-react';
+import { Building, CheckCircle2, Code2, ExternalLink, Server, Layers, Globe } from 'lucide-react';
 import { GithubIcon, LinkedinIcon, InstagramIcon } from '../components/SocialIcons';
 import { Link } from 'react-router-dom';
 
 export default function AboutPage() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    if (window.__lenis) {
+      window.__lenis.scrollTo(0, { immediate: true });
+    }
+  }, []);
+
   return (
     <motion.div
       variants={pageVariants}
@@ -15,20 +23,6 @@ export default function AboutPage() {
       exit="exit"
       className="pt-24 min-h-screen bg-black"
     >
-      {/* Page Hero Header */}
-      <div className="relative py-16 sm:py-24 text-center max-w-4xl mx-auto px-4">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full cyber-glass border border-red-500/30 text-xs font-mono text-red-400 uppercase tracking-widest mb-4">
-          <Sparkles className="w-4 h-4 text-red-400" />
-          The Legacy of Innovation
-        </div>
-        <h1 className="text-4xl sm:text-6xl font-black font-heading text-white tracking-tight">
-          ABOUT <span className="text-red-500 text-glow-red">SAMYAK 2026</span>
-        </h1>
-        <p className="mt-4 text-sm sm:text-lg text-slate-300 font-cyber">
-          KL Deemed to be University&apos;s Flagship National Level Techno-Management Fest. A platform where emerging technologists, designers, business strategists, and artists push the frontiers of what is possible.
-        </p>
-      </div>
-
       {/* Interactive Core About Section */}
       <AboutSection showLink={false} />
 

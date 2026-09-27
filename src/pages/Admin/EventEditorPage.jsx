@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, Save, Upload, Sparkles, Plus, Trash2, 
   Image as ImageIcon, CheckCircle2, AlertCircle, Trophy,
-  Calendar, Clock, MapPin, DollarSign, Shield, ExternalLink
+  Calendar, Clock, MapPin, DollarSign, Shield, ExternalLink, Star
 } from 'lucide-react';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import { useSiteContent } from '../../context/SiteContentContext';
@@ -25,6 +25,7 @@ const DEFAULT_EVENT_TEMPLATE = {
   category: 'Technical',
   department: 'CSE',
   club: 'RPA Club',
+  featured: false,
   date: 'March 14, 2026',
   time: '10:00 AM IST',
   venue: 'KL Cyber Dome, Lab Complex 4',
@@ -316,6 +317,41 @@ export default function EventEditorPage() {
                 />
               </div>
 
+              {/* Star / Feature on Home Page Toggle */}
+              <div className="sm:col-span-2 p-4 rounded-2xl bg-neutral-950 border border-neutral-800 flex items-center justify-between gap-4 shadow-inner">
+                <div className="flex items-center gap-3">
+                  <div className={`p-2.5 rounded-xl border transition-colors ${formData.featured ? 'bg-amber-500/20 border-amber-500/60 text-amber-400' : 'bg-neutral-900 border-neutral-800 text-neutral-500'}`}>
+                    <Star className={`w-5 h-5 ${formData.featured ? 'fill-amber-400' : ''}`} />
+                  </div>
+                  <div>
+                    <div className="text-sm font-heading font-black text-white uppercase tracking-wide flex items-center gap-2">
+                      <span>Feature on Home Page (1080×1350 Showcase)</span>
+                      {formData.featured && (
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                          Active on Home
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-xs text-neutral-400 font-cyber">
+                      Stars this competition to be displayed in the animated 1080×1350 dual-scrolling poster showcase on the homepage.
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, featured: !formData.featured })}
+                  className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 flex-shrink-0 ${
+                    formData.featured
+                      ? 'bg-amber-500 text-black shadow-[0_0_18px_rgba(245,158,11,0.6)] font-black'
+                      : 'bg-neutral-900 hover:bg-neutral-800 text-neutral-400 hover:text-white border border-neutral-700'
+                  }`}
+                >
+                  <Star className={`w-3.5 h-3.5 ${formData.featured ? 'fill-black' : ''}`} />
+                  <span>{formData.featured ? '★ Starred' : '☆ Not Starred'}</span>
+                </button>
+              </div>
+
               {/* Academic Department Selector */}
               <div>
                 <label className="block text-xs font-mono uppercase text-red-400 font-bold mb-1.5">
@@ -499,21 +535,26 @@ export default function EventEditorPage() {
 
             {/* 3A. Primary Event Banner */}
             <div className="space-y-3">
-              <span className="text-xs font-mono uppercase text-neutral-300 font-bold block">
-                Primary Event Banner (Hero &amp; Card Artwork)
-              </span>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono uppercase text-neutral-300 font-bold block">
+                  Official Event Poster (1080×1350 - 4:5 Portrait)
+                </span>
+                <span className="text-[10px] font-mono text-red-400 bg-red-950/60 px-2 py-0.5 rounded border border-red-500/30">
+                  Target: 1080 × 1350 px
+                </span>
+              </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center">
-                {/* Image Preview */}
-                <div className="h-44 sm:h-52 rounded-2xl border-2 border-dashed border-red-500/40 bg-neutral-950 overflow-hidden relative flex items-center justify-center">
+                {/* Image Preview - 4:5 Aspect Ratio */}
+                <div className="w-full max-w-[220px] aspect-[4/5] rounded-2xl border-2 border-dashed border-red-500/40 bg-neutral-950 overflow-hidden relative flex items-center justify-center shadow-lg">
                   {formData.image || formData.banner_url ? (
                     <img
                       src={formData.banner_url || formData.image}
                       alt="Event Banner Preview"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover object-center"
                     />
                   ) : (
-                    <span className="text-xs font-mono text-neutral-600">No banner uploaded</span>
+                    <span className="text-xs font-mono text-neutral-600 text-center px-4">No poster uploaded (1080×1350)</span>
                   )}
                   {uploadingPoster && (
                     <div className="absolute inset-0 bg-black/80 flex items-center justify-center text-xs font-mono text-white">

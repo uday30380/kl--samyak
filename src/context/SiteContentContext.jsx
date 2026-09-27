@@ -184,6 +184,63 @@ const DEFAULT_CONTACT = {
   studentLead: { name: 'Aarav Sharma', role: 'Student President', phone: '+91 91234 56789' },
 };
 
+export const DEFAULT_SPONSORS = [
+  {
+    id: 'sponsor-1',
+    name: 'NEXUS CLOUD',
+    subtitle: 'Decentralized High-Performance GPU Compute',
+    tier: 'Title Partner',
+    logoUrl: '/samyak-emblem.png',
+    websiteUrl: 'https://kluniversity.in',
+    order: 1,
+  },
+  {
+    id: 'sponsor-2',
+    name: 'CYBERDYNE LABS',
+    subtitle: 'Autonomous Robotics & Hardware Systems',
+    tier: 'Robotics Partner',
+    logoUrl: '/samyak-emblem.png',
+    websiteUrl: 'https://kluniversity.in',
+    order: 2,
+  },
+  {
+    id: 'sponsor-3',
+    name: 'QUANTUM VECTOR',
+    subtitle: 'Quantum Computing & Cryptographic Infrastructure',
+    tier: 'Hackathon Partner',
+    logoUrl: '/samyak-emblem.png',
+    websiteUrl: 'https://kluniversity.in',
+    order: 3,
+  },
+  {
+    id: 'sponsor-4',
+    name: 'HYPERION AUDIO',
+    subtitle: 'Concert Grade Acoustic Production & Sound',
+    tier: 'Entertainment Partner',
+    logoUrl: '/samyak-emblem.png',
+    websiteUrl: 'https://kluniversity.in',
+    order: 4,
+  },
+  {
+    id: 'sponsor-5',
+    name: 'AERO DYNAMICS',
+    subtitle: 'Autonomous UAV Systems & Drone Arenas',
+    tier: 'Drone Arena Partner',
+    logoUrl: '/samyak-emblem.png',
+    websiteUrl: 'https://kluniversity.in',
+    order: 5,
+  },
+  {
+    id: 'sponsor-6',
+    name: 'TITAN DEFENSE',
+    subtitle: 'Next-Gen Cyber Threat Intelligence',
+    tier: 'Cybersecurity Partner',
+    logoUrl: '/samyak-emblem.png',
+    websiteUrl: 'https://kluniversity.in',
+    order: 6,
+  },
+];
+
 const SiteContentContext = createContext(null);
 
 export function SiteContentProvider({ children }) {
@@ -217,6 +274,16 @@ export function SiteContentProvider({ children }) {
   const [departments, setDepartments] = useState(() => {
     const saved = localStorage.getItem('samyak_content_departments');
     return saved ? JSON.parse(saved) : DEFAULT_DEPARTMENTS;
+  });
+
+  // Dynamic Sponsors & Ecosystem Partners state
+  const [sponsors, setSponsors] = useState(() => {
+    try {
+      const saved = localStorage.getItem('samyak_content_sponsors');
+      return saved ? JSON.parse(saved) : DEFAULT_SPONSORS;
+    } catch {
+      return DEFAULT_SPONSORS;
+    }
   });
 
   const [loadingContent, setLoadingContent] = useState(true);
@@ -298,10 +365,20 @@ export function SiteContentProvider({ children }) {
         }
       });
 
+      const sponsorsDocRef = doc(db, 'site_content', 'sponsors');
+      const unsubSponsors = onSnapshot(sponsorsDocRef, (snap) => {
+        if (snap.exists() && snap.data()?.sponsors) {
+          const cloudSponsors = snap.data().sponsors;
+          setSponsors(cloudSponsors);
+          localStorage.setItem('samyak_content_sponsors', JSON.stringify(cloudSponsors));
+        }
+      });
+
       return () => {
         unsubAbout();
         unsubSched();
         unsubContact();
+        unsubSponsors();
       };
     } catch (e) {
       console.warn('Site content listener note:', e);
@@ -480,6 +557,50 @@ export function SiteContentProvider({ children }) {
     await cascadeDeleteEventMedia(eventId);
   };
 
+  // Sponsors & Ecosystem Partners CRUD operations
+  const updateSponsors = async (newSponsorsList) => {
+    setSponsors(newSponsorsList);
+    localStorage.setItem('samyak_content_sponsors', JSON.stringify(newSponsorsList));
+    try {
+      const ref = doc(db, 'site_content', 'sponsors');
+      await setDoc(ref, { 
+        sponsors: newSponsorsList, 
+        updated_at: serverTimestamp() 
+      }, { merge: true });
+    } catch (err) {
+      console.error('Failed to sync sponsors with Firestore:', err);
+      throw err;
+    }
+  };
+
+  const addSponsor = async (sponsor) => {
+    const id = sponsor.id || `sponsor-${Date.now()}`;
+    const newSponsor = { 
+      ...sponsor, 
+      id, 
+      order: Number(sponsor.order) || (sponsors.length + 1) 
+    };
+    const updated = [...sponsors, newSponsor].sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0));
+    await updateSponsors(updated);
+    return newSponsor;
+  };
+
+  const editSponsor = async (id, updatedFields) => {
+    const updated = sponsors
+      .map((s) => (s.id === id ? { ...s, ...updatedFields } : s))
+      .sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0));
+    await updateSponsors(updated);
+  };
+
+  const deleteSponsor = async (id) => {
+    const updated = sponsors.filter((s) => s.id !== id);
+    await updateSponsors(updated);
+  };
+
+  const resetDefaultSponsors = async () => {
+    await updateSponsors(DEFAULT_SPONSORS);
+  };
+
   const seedDefaultEvents = async () => {
     try {
       for (const ev of EVENTS_DATA) {
@@ -500,6 +621,7 @@ export function SiteContentProvider({ children }) {
       contactContent,
       events,
       departments,
+      sponsors,
       loadingContent,
       updateAboutContent,
       updateScheduleContent,
@@ -510,6 +632,11 @@ export function SiteContentProvider({ children }) {
       addClubToDepartment,
       deleteClubFromDepartment,
       resetDefaultDepartments,
+      updateSponsors,
+      addSponsor,
+      editSponsor,
+      deleteSponsor,
+      resetDefaultSponsors,
       addEvent,
       updateEvent,
       deleteEvent,

@@ -23,13 +23,13 @@ function calculateTimeRemaining(targetTimestamp) {
 
 function DigitUnit({ value, label }) {
   return (
-    <div className="flex-1 min-w-0 flex flex-col items-center justify-center py-2 sm:py-3 px-1 sm:px-2 rounded hud-unit-card">
+    <div className="flex-1 min-w-0 flex flex-col items-center justify-center py-1.5 sm:py-3 px-1 sm:px-2 rounded hud-unit-card">
       <div className="hud-digit-slot">
-        <span key={value} className="hud-digit-value font-heading font-bold text-slate-100 tabular-nums text-lg min-[360px]:text-xl sm:text-3xl md:text-4xl">
+        <span key={value} className="hud-digit-value font-heading font-bold !text-white tabular-nums text-lg min-[360px]:text-xl sm:text-3xl md:text-4xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)]">
           {value}
         </span>
       </div>
-      <span className="font-mono font-medium text-[8px] min-[360px]:text-[9px] sm:text-xs text-cyan-400/80 tracking-wider sm:tracking-widest uppercase mt-1 select-none">
+      <span className="font-mono font-medium text-[8px] min-[360px]:text-[9px] sm:text-xs !text-cyan-400 tracking-wider sm:tracking-widest uppercase mt-0.5 sm:mt-1 select-none drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)]">
         {label}
       </span>
     </div>
@@ -85,10 +85,10 @@ export default function Countdown({
         ) : (
           <div className="flex flex-col items-center w-full">
             {/* HUD Header */}
-            <div className="text-[11px] min-[360px]:text-xs sm:text-sm font-mono font-medium tracking-[0.25em] text-slate-200 uppercase select-none text-center">
+            <div className="text-[10px] min-[360px]:text-xs sm:text-sm font-mono font-medium tracking-[0.25em] !text-slate-100 uppercase select-none text-center drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
               {dateLabel}
             </div>
-            <div className="text-[9px] min-[360px]:text-[10px] sm:text-xs font-mono tracking-[0.3em] text-cyan-400 uppercase select-none text-center mt-0.5 sm:mt-1 mb-3 sm:mb-5">
+            <div className="text-[9px] min-[360px]:text-[10px] sm:text-xs font-mono tracking-[0.3em] !text-cyan-400 uppercase select-none text-center mt-0.5 sm:mt-1 mb-2 sm:mb-4 drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)]">
               {startsInLabel}
             </div>
 

@@ -1,28 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
+
+@theme {
+  --font-sans: 'Barlow Condensed', sans-serif;
+  --font-heading: 'Barlow Condensed', sans-serif;
+  --font-cyber: 'Barlow Condensed', sans-serif;
+  --font-barlow: 'Barlow Condensed', sans-serif;
+}
 
 @layer base {
   :root {
-    --font-heading: 'Barlow Condensed', 'Orbitron', -apple-system, sans-serif;
-    --font-cyber: 'Barlow Condensed', 'Space Grotesk', -apple-system, sans-serif;
-    --font-sans: 'Barlow Condensed', 'Inter', -apple-system, sans-serif;
+    --font-heading: 'Barlow Condensed', sans-serif;
+    --font-cyber: 'Barlow Condensed', sans-serif;
+    --font-sans: 'Barlow Condensed', sans-serif;
+    --font-barlow: 'Barlow Condensed', sans-serif;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --kl-crimson: #8b151b;
+    --kl-red: #a51c24;
+    --kl-gold: #f59e0b;
+  }
+
+  html.light,
+  body.light,
+  [data-theme="light"],
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+  }
+
+  html.dark,
+  body.dark,
+  [data-theme="dark"] {
+    --bg-primary: #000000;
+    --bg-secondary: #0a0a0a;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
   }
 
   * {
     border-color: rgba(30, 41, 59, 0.4);
     box-sizing: border-box;
+    font-family: 'Barlow Condensed', sans-serif;
   }
 
   html,
   body {
-    font-family: var(--font-sans);
-    background-color: #000000;
-    color: #f8fafc;
+    font-family: 'Barlow Condensed', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
     letter-spacing: 0.02em;
+    font-size: 14.5px;
+    font-weight: 400;
+    line-height: 21.75px;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
+  /* h1: 72px / 700 / 86.4px */
   h1,
+  .h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(38px, 6vw, 72px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  @media (min-width: 768px) {
+    h1,
+    .h1 {
+      font-size: 72px;
+      line-height: 86.4px;
+    }
+  }
+
+  /* h2: 50px / 600 / — */
   h2,
+  .h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(28px, 4.5vw, 50px);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  @media (min-width: 768px) {
+    h2,
+    .h2 {
+      font-size: 50px;
+    }
+  }
+
+  /* h3: proportional 45px / 700 */
   h3,
+  .h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(26px, 4vw, 45px);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* h4: 40px / 700 / 40px */
+  h4,
+  .h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(24px, 3.5vw, 40px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  @media (min-width: 768px) {
+    h4,
+    .h4 {
+      font-size: 40px;
+      line-height: 40px;
+    }
+  }
+
+  /* h5: 22px / 600 / — */
+  h5,
+  .h5 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* h6: 34px / 700 / — */
+  h6,
+  .h6 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* body: 14.5px / 400 / 21.75px */
+  p,
+  .body,
+  .body-default {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14.5px;
+    font-weight: 400;
+    line-height: 21.75px;
+  }
+
+  /* link: 16px / 400 / 20.8px */
+  a,
+  .link,
+  .text-link {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20.8px;
+  }
+
+  /* button: 16px / 400 / 24px */
+  button,
+  .btn,
+  .button,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"] {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+  }
+
+  /* nav-link: 18px / 400 / — */
+  nav a,
+  .nav-link {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+  }
+
   .font-heading {
     font-family: var(--font-heading);
     letter-spacing: 0.04em;
@@ -34,12 +196,98 @@
   }
 }
 
+/* ==========================================================================
+   Typography Specifications (Barlow Condensed Design System Tokens)
+   ========================================================================== */
+/* heading: 24px / 600 / 22.32px */
+.heading,
+.heading-24,
+.text-heading-24 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 22.32px;
+}
+
+/* body: 19px / 400 / 24.7px */
+.body-19,
+.body-lg,
+.text-body-19,
+.text-body-lg {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 24.7px;
+}
+
+/* body: 16px / 700 / 24px */
+.body-16-bold,
+.text-body-16-bold {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+/* body: 14px / 400 / 21px */
+.body-14,
+.body-sm,
+.text-body-14,
+.text-body-sm {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+}
+
+/* body: 16px / 400 / 16px */
+.body-16-tight,
+.body-tight,
+.text-body-16-tight {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+/* body: 16px / 500 / 24px */
+.body-16-medium,
+.body-medium,
+.text-body-16-medium {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+/* body: 14px / 700 / 21px */
+.body-14-bold,
+.body-sm-bold,
+.text-body-14-bold {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 21px;
+}
+
 /* Custom Festive & Sci-Fi Single-Accent Utilities */
 .text-glow-red,
-.text-glow-accent,
-.text-glow-cyan,
+.text-glow-accent {
+  text-shadow: 0 0 5px rgba(239, 68, 68, 0.3);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 5px rgba(6, 182, 212, 0.3);
+}
+
 .text-glow-orange {
-  text-shadow: 0 0 10px rgba(239, 68, 68, 0.7), 0 0 25px rgba(244, 63, 94, 0.4);
+  text-shadow: 0 0 5px rgba(249, 115, 22, 0.3);
+}
+
+/* Tightly condensed gradient-clipped text glow refinement */
+.bg-clip-text.text-glow-red,
+.bg-clip-text.text-glow-accent {
+  text-shadow: 0 0 4px rgba(239, 68, 68, 0.22);
 }
 
 .box-glow-red,
@@ -308,4 +556,386 @@
 
 .cyber-holo-emitter {
   background: radial-gradient(ellipse at center, rgba(239, 68, 68, 0.22) 0%, rgba(220, 38, 38, 0.08) 40%, rgba(0, 0, 0, 0.9) 75%);
+}
+
+/* ── 1080×1350 Poster Marquee Animations (Seamless Dual-Track) ── */
+@keyframes marqueeLeft {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes marqueeRight {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee-left {
+  animation: marqueeLeft 42s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-right {
+  animation: marqueeRight 42s linear infinite;
+  will-change: transform;
+}
+
+.marquee-pause-hover:hover > * {
+  animation-play-state: paused !important;
+}
+
+.marquee-pause-hover:hover {
+  animation-play-state: paused !important;
+}
+
+/* ==========================================================================
+   KL UNIVERSITY BRAND THEME — WHITE (LIGHT) MODE (DEFAULT)
+   Colors extracted directly from official reference image:
+   - Primary Background: #FFFFFF (Pure Crisp White)
+   - Secondary Background: #F8FAFC / #F1F5F9 (Soft Cloud)
+   - University Crimson Maroon: #8B151B / #A51C24 (Thick, rich red)
+   - Accent Golden Yellow: #F59E0B / #D97706 (From Notifications badge)
+   - Primary Headings & Titles: #0F172A (Deep Slate/Charcoal)
+   - Secondary & Body Text: #1E293B / #334155
+   - Muted Text: #475569 / #64748B
+   ========================================================================== */
+
+[data-theme="light"],
+html.light,
+body.light {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* Backgrounds: Turn deep blacks into clean whites and subtle off-whites */
+[data-theme="light"] .bg-black,
+[data-theme="light"] .bg-neutral-950 {
+  background-color: #ffffff !important;
+}
+
+[data-theme="light"] .bg-neutral-900,
+[data-theme="light"] .bg-neutral-900\/90,
+[data-theme="light"] .bg-neutral-900\/80,
+[data-theme="light"] .bg-neutral-900\/70,
+[data-theme="light"] .bg-neutral-950\/90,
+[data-theme="light"] .bg-neutral-950\/80,
+[data-theme="light"] .bg-neutral-950\/70,
+[data-theme="light"] .bg-neutral-950\/95,
+[data-theme="light"] .bg-neutral-950\/75 {
+  background-color: #f8fafc !important;
+}
+
+[data-theme="light"] .bg-neutral-800,
+[data-theme="light"] .bg-neutral-800\/90,
+[data-theme="light"] .bg-neutral-800\/80 {
+  background-color: #f1f5f9 !important;
+}
+
+/* Cyber Cards & Glass in Light Mode */
+[data-theme="light"] .cyber-card {
+  background: #ffffff !important;
+  border-color: rgba(139, 21, 27, 0.16) !important;
+  box-shadow: 0 10px 30px -10px rgba(139, 21, 27, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03) !important;
+}
+
+[data-theme="light"] .cyber-glass {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(139, 21, 27, 0.18) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px -2px rgba(139, 21, 27, 0.06) !important;
+}
+
+/* Typography in Light Mode */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] h5,
+[data-theme="light"] h6 {
+  color: #0f172a !important;
+}
+
+/* Primary text to dark slate, preserving white on buttons/colored pills */
+[data-theme="light"] .text-white:not(.keep-white) {
+  color: #0f172a !important;
+}
+
+/* Buttons and pills that MUST have white text */
+[data-theme="light"] button.bg-red-600,
+[data-theme="light"] a.bg-red-600,
+[data-theme="light"] .bg-red-600,
+[data-theme="light"] .bg-red-600 *,
+[data-theme="light"] .bg-red-600 .text-white,
+[data-theme="light"] .from-red-600,
+[data-theme="light"] .from-red-600 *,
+[data-theme="light"] .from-red-600 .text-white,
+[data-theme="light"] .bg-gradient-to-r.from-red-600,
+[data-theme="light"] .bg-gradient-to-r.from-red-600 *,
+[data-theme="light"] .bg-gradient-to-r.from-red-600 .text-white,
+[data-theme="light"] .bg-red-700,
+[data-theme="light"] .bg-red-700 *,
+[data-theme="light"] .bg-red-800,
+[data-theme="light"] .bg-red-800 *,
+[data-theme="light"] .bg-red-900,
+[data-theme="light"] .bg-red-900 *,
+[data-theme="light"] .bg-red-950,
+[data-theme="light"] .bg-red-950 *,
+[data-theme="light"] .keep-white,
+[data-theme="light"] .keep-white * {
+  color: #ffffff !important;
+}
+
+/* Secondary & Muted Text */
+[data-theme="light"] .text-neutral-300,
+[data-theme="light"] .text-slate-300,
+[data-theme="light"] .text-slate-200,
+[data-theme="light"] .text-neutral-200 {
+  color: #1e293b !important;
+}
+
+[data-theme="light"] .text-neutral-400,
+[data-theme="light"] .text-slate-400,
+[data-theme="light"] .text-neutral-500,
+[data-theme="light"] .text-slate-500 {
+  color: #475569 !important;
+}
+
+/* Rich University Crimson Red ("colour thickness of red") */
+[data-theme="light"] .text-red-500,
+[data-theme="light"] .text-red-400,
+[data-theme="light"] .text-rose-500,
+[data-theme="light"] .text-rose-400 {
+  color: #8b151b !important;
+}
+
+[data-theme="light"] .text-glow-red {
+  text-shadow: 0 0 1px rgba(139, 21, 27, 0.4) !important;
+}
+
+[data-theme="light"] .bg-red-600,
+[data-theme="light"] .from-red-600,
+[data-theme="light"] .to-red-600 {
+  background-color: #8b151b !important;
+}
+
+[data-theme="light"] .border-red-500,
+[data-theme="light"] .border-red-500\/30,
+[data-theme="light"] .border-red-500\/40,
+[data-theme="light"] .border-red-500\/50,
+[data-theme="light"] .border-red-500\/60,
+[data-theme="light"] .border-red-500\/70,
+[data-theme="light"] .border-red-400 {
+  border-color: rgba(139, 21, 27, 0.35) !important;
+}
+
+/* Neutral borders to soft light borders */
+[data-theme="light"] .border-neutral-800,
+[data-theme="light"] .border-neutral-800\/80,
+[data-theme="light"] .border-neutral-800\/90,
+[data-theme="light"] .border-neutral-700,
+[data-theme="light"] .border-neutral-700\/80,
+[data-theme="light"] .border-white\/5,
+[data-theme="light"] .border-white\/10 {
+  border-color: #e2e8f0 !important;
+}
+
+/* Form Inputs, Selects, Textareas */
+[data-theme="light"] input,
+[data-theme="light"] select,
+[data-theme="light"] textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+  color: #94a3b8 !important;
+}
+[data-theme="light"] input:focus,
+[data-theme="light"] select:focus,
+[data-theme="light"] textarea:focus {
+  border-color: #8b151b !important;
+  box-shadow: 0 0 0 2px rgba(139, 21, 27, 0.2) !important;
+}
+
+/* Golden Yellow Accents from image ("Notifications" badge & ranking tabs) */
+[data-theme="light"] .bg-amber-500\/25,
+[data-theme="light"] .bg-amber-500\/20,
+[data-theme="light"] .bg-amber-950\/40,
+[data-theme="light"] .bg-amber-950\/50 {
+  background-color: #fef3c7 !important;
+  border-color: #f59e0b !important;
+  color: #b45309 !important;
+}
+
+[data-theme="light"] .text-amber-300,
+[data-theme="light"] .text-amber-400 {
+  color: #b45309 !important;
+}
+
+/* Header (Navbar) in Light Mode */
+[data-theme="light"] header {
+  background-image: none !important;
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-bottom: 1px solid rgba(139, 21, 27, 0.12) !important;
+  box-shadow: 0 4px 25px -2px rgba(139, 21, 27, 0.08) !important;
+}
+
+[data-theme="light"] header nav {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="light"] header nav .nav-link {
+  color: #334155 !important;
+}
+
+[data-theme="light"] header nav .nav-link:hover {
+  color: #8b151b !important;
+  background-color: rgba(139, 21, 27, 0.06) !important;
+}
+
+[data-theme="light"] header nav .nav-link .bg-red-600 {
+  background-color: #8b151b !important;
+}
+
+[data-theme="light"] header nav .nav-link.active span,
+[data-theme="light"] header nav .nav-link .bg-red-600 ~ span,
+[data-theme="light"] header nav .nav-link:has(.bg-red-600) span {
+  color: #ffffff !important;
+}
+
+/* Footer in Light Mode */
+[data-theme="light"] footer {
+  background-color: #ffffff !important;
+  border-top-color: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+[data-theme="light"] footer h4,
+[data-theme="light"] footer h3,
+[data-theme="light"] footer h2 {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] footer p {
+  color: #475569 !important;
+}
+
+[data-theme="light"] footer a {
+  color: #334155 !important;
+}
+
+[data-theme="light"] footer a:hover {
+  color: #8b151b !important;
+}
+
+[data-theme="light"] footer .text-slate-400,
+[data-theme="light"] footer .text-neutral-400 {
+  color: #475569 !important;
+}
+
+[data-theme="light"] footer .text-red-400 {
+  color: #8b151b !important;
+}
+
+[data-theme="light"] footer .border-neutral-800,
+[data-theme="light"] footer .border-neutral-900\/60 {
+  border-color: #e2e8f0 !important;
+}
+
+[data-theme="light"] footer .bg-neutral-900,
+[data-theme="light"] footer .bg-neutral-950\/80 {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Mobile Drawer in Light Mode */
+[data-theme="light"] header ~ div .bg-black\/95 {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  border-bottom: 1px solid rgba(139, 21, 27, 0.15) !important;
+}
+
+[data-theme="light"] header ~ div a.nav-link {
+  color: #1e293b !important;
+}
+
+[data-theme="light"] header ~ div a.nav-link:hover {
+  background-color: #f1f5f9 !important;
+  color: #8b151b !important;
+}
+
+[data-theme="light"] header ~ div a.nav-link.bg-red-600 {
+  background-color: #8b151b !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] header ~ div a.nav-link.bg-red-600 * {
+  color: #ffffff !important;
+}
+
+/* ==========================================================================
+   HERO & DARK MEDIA SECTIONS: TEXT MUST ALWAYS REMAIN CRISP, BRILLIANT WHITE
+   ========================================================================== */
+#hero,
+#hero h1,
+#hero h1 span:first-child,
+#hero p,
+#hero .font-cyber,
+#hero span.text-white,
+#hero .hud-digit-value,
+.dark-media-surface,
+.dark-media-surface * {
+  color: #ffffff !important;
+}
+
+#hero h1 span.text-transparent {
+  color: transparent !important;
+}
+
+#hero .text-red-500,
+#hero .text-red-400,
+#hero .text-glow-red {
+  color: #ef4444 !important;
+  text-shadow: 0 0 25px rgba(239, 68, 68, 0.7) !important;
+}
+
+#hero .text-cyan-400 {
+  color: #38bdf8 !important;
+}
+
+#hero .text-amber-400 {
+  color: #fbbf24 !important;
+}
+
+#hero .cyber-glass {
+  background: rgba(0, 0, 0, 0.65) !important;
+  border-color: rgba(239, 68, 68, 0.45) !important;
+}
+
+#hero .hud-digit-value {
+  color: #ffffff !important;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 2px 10px rgba(0, 0, 0, 0.9) !important;
+}
+
+#hero .hud-panel * {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Navbar active state contrast guarantee */
+[data-theme="light"] header nav a.nav-link.active,
+[data-theme="light"] header nav a.nav-link .bg-red-600 ~ span,
+[data-theme="light"] header nav a.nav-link:has(.bg-red-600) span {
+  color: #ffffff !important;
 }

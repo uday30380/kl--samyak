@@ -6,7 +6,7 @@ import {
   Upload, CheckCircle2, AlertCircle, Save, Eye, Users, Calendar, 
   Phone, Mail, MapPin, Trophy, DollarSign, Clock, FileText, Image as ImageIcon,
   ChevronRight, RefreshCw, ZoomIn, X, Search, Filter, Layers, HelpCircle, Folder,
-  UserCheck, UserX, Download, Cloud, CreditCard, Ticket, Cpu
+  UserCheck, UserX, Download, Cloud, CreditCard, Ticket, Cpu, Award, Star
 } from 'lucide-react';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import { useSiteContent } from '../../context/SiteContentContext';
@@ -15,6 +15,7 @@ import { collection, onSnapshot, query, orderBy, getDocs, doc, updateDoc, setDoc
 import { db } from '../../services/firebase';
 import SuperadminSuite from './SuperadminSuite';
 import DepartmentsManager from './DepartmentsManager';
+import SponsorsManager from './SponsorsManager';
 import PaymentsManager from './PaymentsManager';
 import EventRosterManager from './EventRosterManager';
 import GatePassManager from './GatePassManager';
@@ -37,6 +38,7 @@ export default function AdminDashboard() {
     contactContent, 
     events, 
     departments,
+    sponsors,
     updateAboutContent, 
     updateScheduleContent, 
     updateContactContent, 
@@ -58,6 +60,7 @@ export default function AdminDashboard() {
     if (p.includes('/rosters') || p.includes('/roster')) return 'rosters';
     if (p.includes('/events')) return 'events';
     if (p.includes('/departments')) return 'departments';
+    if (p.includes('/sponsors')) return 'sponsors';
     if (p.includes('/about')) return 'about';
     if (p.includes('/schedule')) return 'schedule';
     if (p.includes('/registrations')) return 'registrations';
@@ -75,6 +78,7 @@ export default function AdminDashboard() {
       rosters: '/samyakadmin/rosters',
       events: '/samyakadmin/events',
       departments: '/samyakadmin/departments',
+      sponsors: '/samyakadmin/sponsors',
       about: '/samyakadmin/about',
       schedule: '/samyakadmin/schedule',
       registrations: '/samyakadmin/registrations',
@@ -425,6 +429,13 @@ export default function AdminDashboard() {
             badge={departments?.length || null}
           />
           <TabButton 
+            active={activeTab === 'sponsors'} 
+            onClick={() => handleNavigateTab('sponsors')} 
+            icon={Award} 
+            label="Sponsors & Partners" 
+            badge={sponsors?.length || null}
+          />
+          <TabButton 
             active={activeTab === 'about'} 
             onClick={() => handleNavigateTab('about')} 
             icon={FileText} 
@@ -537,6 +548,10 @@ export default function AdminDashboard() {
 
           {activeTab === 'departments' && (
             <DepartmentsManager onToast={showToast} />
+          )}
+
+          {activeTab === 'sponsors' && (
+            <SponsorsManager onToast={showToast} />
           )}
 
           {activeTab === 'techclub' && (
@@ -878,7 +893,7 @@ function MetricCard({ title, value, icon: Icon, desc, action, highlight }) {
 }
 
 // 2. EVENTS & POSTERS MANAGER
-function EventsManager({ events, onDeleteEvent, departments }) {
+function EventsManager({ events, onUpdateEvent, onDeleteEvent, departments, onToast }) {
   const navigate = useNavigate();
   const [filterCategory, setFilterCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -897,7 +912,7 @@ function EventsManager({ events, onDeleteEvent, departments }) {
             EVENTS &amp; <span className="text-red-500">POSTERS</span>
           </h2>
           <p className="text-xs text-slate-400 font-cyber">
-            Add new competitions, upload event posters via ImgBB, edit fees, rules, prizes, and venue details.
+            Add new competitions, upload event posters via ImgBB, edit fees, rules, prizes, and star events to feature on the Home Page.
           </p>
         </div>
 
@@ -941,10 +956,14 @@ function EventsManager({ events, onDeleteEvent, departments }) {
         {filteredEvents.map((ev) => (
           <div 
             key={ev.id}
-            className="p-4 rounded-2xl bg-neutral-900/60 border border-neutral-800 hover:border-red-500/30 flex flex-col justify-between transition-all"
+            className={`p-4 rounded-2xl bg-neutral-900/60 border transition-all flex flex-col justify-between ${
+              ev.featured 
+                ? 'border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.15)] bg-neutral-900/80' 
+                : 'border-neutral-800 hover:border-red-500/30'
+            }`}
           >
             <div>
-              <div className="relative h-36 rounded-xl overflow-hidden bg-black mb-3 border border-neutral-800">
+              <div className="relative h-44 rounded-xl overflow-hidden bg-black mb-3 border border-neutral-800">
                 <img 
                   src={ev.image || '/hero-bg.png'} 
                   alt={ev.title} 
@@ -953,7 +972,37 @@ function EventsManager({ events, onDeleteEvent, departments }) {
                 <div className="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-black/80 backdrop-blur-md border border-red-500/40 text-[10px] font-mono text-red-400">
                   {ev.category}
                 </div>
-                <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-red-600/90 text-[10px] font-mono text-white font-bold">
+
+                {/* Star / Feature on Home Button */}
+                <button
+                  type="button"
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    const newFeatured = !ev.featured;
+                    if (onUpdateEvent) {
+                      await onUpdateEvent(ev.id, { ...ev, featured: newFeatured });
+                    }
+                    if (onToast) {
+                      onToast(
+                        newFeatured ? `⭐ "${ev.title}" featured on Home Page!` : `Removed "${ev.title}" from Home Page featured.`,
+                        newFeatured ? 'success' : 'info'
+                      );
+                    }
+                  }}
+                  title={ev.featured ? 'Featured on Home Page (Click to unfeature)' : 'Star event to feature on Home Page'}
+                  className={`absolute top-2 right-2 px-2.5 py-1 rounded-lg backdrop-blur-md transition-all z-10 cursor-pointer flex items-center gap-1.5 shadow-lg ${
+                    ev.featured
+                      ? 'bg-amber-500 text-black font-black border border-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.6)] scale-105'
+                      : 'bg-black/75 text-neutral-300 border border-neutral-700 hover:text-amber-300 hover:border-amber-400/60'
+                  }`}
+                >
+                  <Star className={`w-3.5 h-3.5 ${ev.featured ? 'fill-black' : ''}`} />
+                  <span className="text-[10px] font-mono font-bold uppercase">
+                    {ev.featured ? 'Featured' : 'Star'}
+                  </span>
+                </button>
+
+                <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded-full bg-red-600/90 text-[10px] font-mono text-white font-bold">
                   {ev.prize}
                 </div>
               </div>
@@ -965,6 +1014,12 @@ function EventsManager({ events, onDeleteEvent, departments }) {
                 {ev.club && (
                   <span className="px-2 py-0.5 rounded-full bg-neutral-950 border border-neutral-800 text-[10px] font-mono text-neutral-300 truncate max-w-[160px]">
                     {ev.club}
+                  </span>
+                )}
+                {ev.featured && (
+                  <span className="ml-auto inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-mono font-bold uppercase">
+                    <Star className="w-2.5 h-2.5 fill-amber-400" />
+                    <span>Home</span>
                   </span>
                 )}
               </div>
