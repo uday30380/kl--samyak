@@ -15,15 +15,18 @@ College fest website for SAMYAK. AI-facing reference guide and system constraint
 - **Hosting / Deployment**: Firebase Hosting (`.firebaserc`, `firebase.json`, `dist/`)
 - **Linter**: oxlint
 
-## Project Structure
-- `src/pages/` — Route-level pages (`Home`, `About`, `Events`, `Schedule`, `Gallery`, `Profile`, `Payment`, `Contact`, `Admin/*`)
-- `src/components/` — Feature folders (`Hero`, `Events`, `Gallery`, `Payment`, `Profile`, `Sponsors`, `Navbar`, `Footer`, `Audio`, `Cursor`, `3d`, etc.)
-- `src/context/` — 
-  - `AdminAuthContext.jsx`: Admin session, authentication, roles, provisioned sub-admin logins
-  - `SiteContentContext.jsx`: Public site content (departments, clubs, schedule, events) backed by Firestore with local fallback data in `src/data/`
-- `src/services/firebase.js` — Firebase app initialization + re-exported Firestore/Auth helpers
-- `src/services/imgbb.js` — ImgBB image upload helper
-- `firestore.rules` — Firestore security rules
+## Project Structure (Monorepo)
+- **`frontend/`**:
+  - `src/pages/` — Route-level pages (`Home`, `About`, `Events`, `Schedule`, `Gallery`, `Profile`, `Payment`, `Contact`, `Admin/*`)
+  - `src/components/` — Feature folders (`Hero`, `Events`, `Gallery`, `Payment`, `Profile`, `Sponsors`, `Navbar`, `Footer`, `Audio`, `Cursor`, `3d`, etc.)
+  - `src/context/` — AdminAuthContext, SiteContentContext, ThemeContext
+  - `src/services/` — Firebase client services, R2, ImgBB, IntegrityGuard
+- **`backend/`**:
+  - `src/server.js` — Express.js API server
+  - `src/routes/` — Modular REST endpoints (`health`, `events`, `payments`, `admin`)
+  - `firestore.rules` — Firestore security rules
+  - `storage.rules` — Firebase storage security rules
+  - `scripts/verify_payment_qr.mjs` — UPI QR verification test utility
 
 ## Backend / Data Model (Firestore Collections)
 | Collection | Purpose |

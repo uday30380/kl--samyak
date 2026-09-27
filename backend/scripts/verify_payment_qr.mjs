@@ -1,7 +1,7 @@
 import QRCode from 'qrcode';
 import jsQR from 'jsqr';
 import { PNG } from 'pngjs';
-import { buildUpiPaymentUri, parseUpiPaymentUri, PAYMENT_CONFIG } from './src/config/paymentConfig.js';
+import { buildUpiPaymentUri, parseUpiPaymentUri, PAYMENT_CONFIG } from '../src/config/paymentConfig.js';
 
 async function testTier(tier) {
   console.log(`\n======================================================`);

@@ -26,6 +26,12 @@ SAMYAK 2026 is the annual flagship national fest featuring 45+ technical, cultur
 - **Lead Platform Architect**: [Balaram (@balaram753)](https://github.com/balaram753)
 - **UI Experience & Engineering**: [Uday Kiran Vempati](https://udaykiranportfolio.web.app/)
 
+## 📁 Monorepo Architecture
+
+The repository is structured into two dedicated directories:
+- **`frontend/`**: Complete client application built with React 19, Vite 8, Tailwind CSS 4, Framer Motion, GSAP, and Three.js.
+- **`backend/`**: Node.js & Express API server, Firebase Firestore (`firestore.rules`) and Storage (`storage.rules`) security rules, and UPI QR verification tools.
+
 ## 💻 Getting Started
 
 ### Prerequisites
@@ -37,14 +43,29 @@ SAMYAK 2026 is the annual flagship national fest featuring 45+ technical, cultur
 # Clone the repository
 git clone https://github.com/uday30380/kl--samyak.git
 
-# Install dependencies
+# Install all workspace dependencies
 npm install
+```
 
-# Start local development server
+### Running the Project
+
+```bash
+# Start frontend client (Vite on http://localhost:5173)
 npm run dev
+# or:
+npm run dev:frontend
 
-# Production build
+# Start backend server (Express on http://localhost:5000)
+npm run dev:backend
+
+# Run both frontend and backend concurrently
+npm run dev:all
+
+# Production build frontend
 npm run build
+
+# Standalone payment verification test
+npm --prefix backend run verify:qr
 ```
 
 ---

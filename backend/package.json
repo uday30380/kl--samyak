@@ -1,0 +1,23 @@
+{
+  "name": "samyak-2026-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend services, APIs, and Firebase administration for SAMYAK 2026",
+  "author": "Balaram (https://github.com/balaram753)",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "verify:qr": "node scripts/verify_payment_qr.mjs"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "firebase-admin": "^13.2.0",
+    "jsqr": "^1.4.0",
+    "pngjs": "^7.0.0",
+    "qrcode": "^1.5.4"
+  }
+}
